@@ -9,54 +9,8 @@
     },
     "7e8907c7-f605-43df-94b8-68d3565a7020": {
       "type": "cart-upsells",
-      "blocks": {
-        "b0cf2c48-abe9-4632-a0c7-9c2b880f3ce0": {
-          "type": "upsell",
-          "settings": {
-            "upsell_requirement": "pre-order",
-            "upsell_product": "image-aspect-ratio"
-          }
-        },
-        "aee163d0-8139-4541-bf8c-f104b31cfde4": {
-          "type": "upsell",
-          "settings": {
-            "upsell_requirement": "tshirt-3-options",
-            "upsell_product": "png-product-images"
-          }
-        },
-        "62c6fd95-d3e0-4991-9717-3419c15c0c75": {
-          "type": "upsell",
-          "settings": {
-            "upsell_requirement": "rte-test",
-            "upsell_product": "enamel-pin"
-          }
-        },
-        "1a299065-cf8c-4e8e-89c3-cfea6869f818": {
-          "type": "upsell",
-          "settings": {
-            "upsell_requirement": "enamel-pin",
-            "upsell_product": "socks-2-options"
-          }
-        },
-        "ec9f857c-39a9-4a04-8f37-4bbdf2f9b01e": {
-          "type": "upsell",
-          "settings": {
-            "upsell_requirement": "socks-2-options",
-            "upsell_product": "image-aspect-ratio-portrait"
-          }
-        }
-      },
-      "block_order": [
-        "b0cf2c48-abe9-4632-a0c7-9c2b880f3ce0",
-        "aee163d0-8139-4541-bf8c-f104b31cfde4",
-        "62c6fd95-d3e0-4991-9717-3419c15c0c75",
-        "1a299065-cf8c-4e8e-89c3-cfea6869f818",
-        "ec9f857c-39a9-4a04-8f37-4bbdf2f9b01e"
-      ],
       "settings": {
-        "title": "Products You May Like",
-        "bottom_margin_mobile": 40,
-        "bottom_margin_desktop": 70
+        "title": "Products You May Like"
       }
     }
   },

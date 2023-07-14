@@ -12,3 +12,5 @@ Utilized the sections API for pulling updated content.
 ## Upsells
 
 Added a new section for the upsells, with a block for adding the upsell required product, and the product to display in the upsells if the required product is in the cart (will also not display the upsell if it is also in the cart).
+
+**NOTE**: I left out upsells set in the cart template by default since there's probably differences in test products between stores.
