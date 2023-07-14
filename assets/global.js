@@ -1254,3 +1254,85 @@ class ProductRecommendations extends HTMLElement {
 }
 
 customElements.define('product-recommendations', ProductRecommendations);
+
+/*
+ * Add the custom product tile web component
+ */
+class ProductTile extends HTMLElement {
+  constructor () {
+    super();
+  }
+
+  static get observedAttributes() { 
+    return ['title', 'price', 'description', 'quantity'];
+  }
+
+  connectedCallback() {
+    const template = document.querySelector(`#ProductTile`);
+    this.appendChild(template.content.cloneNode(true));
+
+    // set all innerHTML contents of the component
+    ProductTile.observedAttributes.forEach((attribute) => {
+      const attributeValue = this.getAttribute(attribute);
+      const elementToUpdate = this.querySelector(`[data-item-${attribute}]`) || false;
+      if (elementToUpdate) elementToUpdate.innerHTML = attributeValue;
+    });
+
+    const tileImage = this.querySelector('[data-item-image]') || false;
+    if (tileImage) {
+      tileImage.setAttribute('src', this.getAttribute('image'));
+      tileImage.setAttribute('alt', this.getAttribute('title'));
+    }
+
+    const variantID = this.getAttribute('variant');
+    const atcButton = this.querySelector('[data-add-to-cart]');
+    atcButton.addEventListener('click', () => {
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: variantID,
+          quantity: 1
+        })
+      })
+        .then((blob) => blob.json())
+        .then((newCart) => {
+          const cartEvent = new Event('CartContentsUpdated');
+          document.dispatchEvent(cartEvent);
+        })
+    });
+  }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    const elementToUpdate = this.querySelector(`[data-item-${name}]`) || false;
+    if (elementToUpdate) elementToUpdate.innerHTML = newValue;
+  }
+}
+customElements.define("product-tile", ProductTile);
+
+/*
+ * Listen for cart update and pull new cart recommendations
+ */
+window.createElementFromHTML = (htmlString) => {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+  return div.firstChild;
+}
+
+document.addEventListener('CartContentsUpdated', (event) => {
+  // check for upsells / recommendations and update
+  const cartUpsells = document.querySelector('[cart-upsells-page]') || false;
+  if (cartUpsells) {
+    fetch(`/?sections=${cartUpsells.getAttribute('cart-upsells-page')}`)
+      .then((blob) => blob.json())
+      .then((response) => {
+        const contents = Object.values(response)[0];
+        const contentAsHTML = window.createElementFromHTML(contents);
+        const newItems = contentAsHTML.querySelector('[data-cart-upsells]');
+        const itemsToReplace = cartUpsells.querySelector('[data-cart-upsells]');
+        itemsToReplace.innerHTML = newItems.innerHTML;
+      })
+  }
+});

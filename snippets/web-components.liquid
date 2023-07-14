@@ -1,0 +1,53 @@
+<div aria-hidden="true">
+  <template id="CartPageItem">
+    <div class="cart-item">
+      <img data-item-image 
+           class="cart-item__image" />
+      <div>
+        <h3 data-item-title
+            class="cart-item__title"></h3>
+        <p data-item-price
+           class="cart-item__price"></p>
+        <p data-item-line-price
+           class="cart-item__price"></p>
+      </div>
+      <div class="cart-item__controls">
+        <div class="cart-item__trash">
+          <button data-remove-item
+                  aria-label="Remove Item"
+                  class="button-clear">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+          </button>
+        </div>
+
+        <div class="cart-item__quantity">
+          <button data-decrease-item
+                  aria-label="decrease item quantity"
+                  class="button-clear cart-item__update-button">
+            -
+          </button>
+          <span data-item-quantity
+                class="cart-item__quantity-counter"></span>
+          <button data-increase-item
+                  aria-label="increase item quantity"
+                  class="button-clear cart-item__update-button">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+
+  <template id="ProductTile">
+    <div class="product-tile">
+      <img data-item-image 
+           class="product-tile__image" />
+      <h3 data-item-title></h3>
+      <p data-item-price></p>
+      <button data-add-to-cart
+              class="product-tile__button button">Add To Cart</button>
+    </div>
+  </template>
+</div>

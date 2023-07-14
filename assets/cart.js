@@ -244,3 +244,91 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
+
+
+
+/*
+ * Add the custom cart page item component
+ */
+
+function updateCartQuantity (itemKey, newQuantity) {
+  const itemsWrap = document.querySelector('[data-cart-items-list]') || false;
+  if (itemsWrap) itemsWrap.classList.add('section-disabled');
+
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: itemKey,
+      quantity: newQuantity
+    })
+  })
+    .then((blob) => blob.json())
+    .then((newCart) => {
+      const cartEvent = new Event('CartContentsUpdated');
+      document.dispatchEvent(cartEvent);
+    })
+}
+
+class CartPageItem extends HTMLElement {
+  constructor () {
+    super();
+  }
+
+  static get observedAttributes() { 
+    return ['title', 'price', 'line-price', 'quantity'];
+  }
+
+  connectedCallback() {
+    const template = document.querySelector(`#CartPageItem`);
+    this.appendChild(template.content.cloneNode(true));
+
+    CartPageItem.observedAttributes.forEach((attribute) => {
+      const attributeValue = this.getAttribute(attribute);
+      const elementToUpdate = this.querySelector(`[data-item-${attribute}]`) || false;
+      if (elementToUpdate) elementToUpdate.innerHTML = attributeValue;
+    });
+
+    const tileImage = this.querySelector('[data-item-image]') || false;
+    if (tileImage) {
+      tileImage.setAttribute('src', this.getAttribute('image'));
+      tileImage.setAttribute('alt', this.getAttribute('title'));
+    }
+
+    const quantity = parseInt(this.getAttribute('quantity'), 10);
+    const itemKey = this.getAttribute('key');
+    const removeItemButton = this.querySelector('[data-remove-item]');
+    const increaseQuantityButton = this.querySelector('[data-increase-item]');
+    const decreaseQuantityButton = this.querySelector('[data-decrease-item]');
+
+    increaseQuantityButton.addEventListener('click', () => updateCartQuantity(itemKey, quantity + 1));
+    decreaseQuantityButton.addEventListener('click', () => updateCartQuantity(itemKey, quantity - 1));
+    removeItemButton.addEventListener('click', () => updateCartQuantity(itemKey, 0));
+  }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    const elementToUpdate = this.querySelector(`[data-item-${name}]`) || false;
+    if (elementToUpdate) elementToUpdate.innerHTML = newValue;
+  }
+}
+
+customElements.define("cart-page-item", CartPageItem);
+
+// Listen for cart update and re-enable cart item components
+document.addEventListener('CartContentsUpdated', (event) => {
+  const cartItems = document.querySelector('[data-cart-items-list]') || false;
+  if (cartItems) {
+    fetch(`/?sections=${cartItems.getAttribute('data-cart-items-list')}`)
+      .then((blob) => blob.json())
+      .then((response) => {
+        const contents = Object.values(response)[0];
+        const contentAsHTML = window.createElementFromHTML(contents);
+        const newItems = contentAsHTML.querySelector('[data-cart-items-list]');
+        const itemsToReplace = cartItems.querySelector('[data-cart-items-list]');
+        cartItems.innerHTML = newItems.innerHTML;
+        cartItems.classList.remove('section-disabled');
+      });
+  }
+});

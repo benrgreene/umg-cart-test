@@ -1,3 +1,6 @@
+{{- 'cart-upsells.css' | asset_url | stylesheet_tag -}}
+
+
 {%- capture handles_in_cart -%}
   {%- for item in cart.items -%}
     |{{- item.product.handle -}}|
@@ -5,23 +8,23 @@
 {%- endcapture -%}
 
 
-<div class="cart-upsells">
+<div class="cart-upsells page-width"
+     cart-upsells-page="{{ section.id }}">
   <h2>{{- section.settings.title -}}</h2>
   <div data-cart-upsells
        class="cart-upsells__products">
     {%- for block in section.blocks -%}
       {%- assign requirement_handle = '|' | append: block.settings.upsell_requirement | append: '|' -%}
       {%- if handles_in_cart contains requirement_handle -%}
-        {%- assign product_object = all_products[block.settings.upsell_requirement] -%}
-        <p>{{ product_object.title }}</p>
+        {%- assign product_object = all_products[block.settings.upsell_product] -%}
+        <product-tile title="{{ product_object.title }}"
+                      price="{{ product_object.price | money }}"
+                      image="{{ product_object.featured_image | img_url: '400x' }}"
+                      variant="{{ product_object.selected_or_first_available_variant.id }}"></product-tile>
       {%- endif -%}
     {%- endfor -%}
   </div>
 </div>
-
-{%- render 'spacer',
-    _mobile_space: section.settings.bottom_margin_mobile,
-    _desktop_space: section.settings.bottom_margin_desktop -%}
 
 {% schema %}
   {
@@ -37,28 +40,6 @@
         "id": "title",
         "label": "Section Title",
         "default": "Products You May Like"
-      },
-      {
-        "type": "header",
-        "content": "Section Spacing"
-      },
-      {
-        "id": "bottom_margin_mobile",
-        "label": "Bottom Margin - Mobile",
-        "type": "range",
-        "min": 0,
-        "max": 200,
-        "step": 2,
-        "default": 40
-      },
-      {
-        "id": "bottom_margin_desktop",
-        "label": "Bottom Margin - Desktop",
-        "type": "range",
-        "min": 0,
-        "max": 200,
-        "step": 2,
-        "default": 70
       }
     ],
     "blocks": [
@@ -82,7 +63,10 @@
       }
     ],
     "templates": [
-      "cart"
+      "cart",
+      "index",
+      "page",
+      "product"
     ],
     "presets": [
       {

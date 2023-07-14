@@ -3499,3 +3499,18 @@ details-disclosure > details {
     --border-offset: 0px; /* Prevent the border from growing on buttons when this effect is on. */
   }
 }
+
+.button-clear {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.product-tile__image {
+  width: 100%;
+}
+
+.product-tile__button {
+  width: 100%;
+}
