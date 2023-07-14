@@ -34,7 +34,7 @@
                           line-price="Item Subtotal: {{ item.final_line_price | money }}"
                           quantity="{{ item.quantity }}"
                           key="{{ item.key }}"
-                          image="{{ item.product.featured_image | img_url: '400x' }}"></cart-page-item>
+                          image="{{ item.product.featured_image | img_url: '400x400', crop: 'center' }}"></cart-page-item>
         {%- endfor -%}
         {%- if cart.item_count == 0 -%}
           <div>

@@ -17,12 +17,14 @@
     {%- for block in section.blocks -%}
       {%- assign requirement_handle = '|' | append: block.settings.upsell_requirement | append: '|' -%}
       {%- if handles_in_cart contains requirement_handle -%}
-        {%- assign displayed_upsell = true -%}
-        {%- assign product_object = all_products[block.settings.upsell_product] -%}
-        <product-tile title="{{ product_object.title }}"
-                      price="{{ product_object.price | money }}"
-                      image="{{ product_object.featured_image | img_url: '400x' }}"
-                      variant="{{ product_object.selected_or_first_available_variant.id }}"></product-tile>
+        {%- unless handles_in_cart contains block.settings.upsell_product -%}
+          {%- assign displayed_upsell = true -%}
+          {%- assign product_object = all_products[block.settings.upsell_product] -%}
+          <product-tile title="{{ product_object.title }}"
+                        price="{{ product_object.price | money }}"
+                        image="{{ product_object.featured_image | img_url: '400x400', crop: 'center' }}"
+                        variant="{{ product_object.selected_or_first_available_variant.id }}"></product-tile>
+        {%- endunless -%}
       {%- endif -%}
     {%- endfor -%}
     {%- if displayed_upsell == false -%}
