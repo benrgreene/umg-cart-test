@@ -1,0 +1,10 @@
+<div x-data="{ layout: $store.layoutInfo }"
+     class="fixed inset-0 w-screen h-screen z-[100] flex justify-center items-center"
+     :class="layout.searchOpen ? 'block' : 'hidden'">
+  <button class="absolute inset-0 w-screen h-screen bg-black opacity-60"
+          @click="layout.setSearchOpen(false)"
+          aria-label="close search box"></button>
+  <div class="ccontain relative z-1 min-h-[30vh] bg-white">
+    <h2>Search</h2>
+  </div>
+</div>

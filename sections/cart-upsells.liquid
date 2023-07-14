@@ -1,0 +1,94 @@
+{%- capture handles_in_cart -%}
+  {%- for item in cart.items -%}
+    |{{- item.product.handle -}}|
+  {%- endfor -%}
+{%- endcapture -%}
+
+
+<div class="cart-upsells">
+  <h2>{{- section.settings.title -}}</h2>
+  <div data-cart-upsells
+       class="cart-upsells__products">
+    {%- for block in section.blocks -%}
+      {%- assign requirement_handle = '|' | append: block.settings.upsell_requirement | append: '|' -%}
+      {%- if handles_in_cart contains requirement_handle -%}
+        {%- assign product_object = all_products[block.settings.upsell_requirement] -%}
+        <p>{{ product_object.title }}</p>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{%- render 'spacer',
+    _mobile_space: section.settings.bottom_margin_mobile,
+    _desktop_space: section.settings.bottom_margin_desktop -%}
+
+{% schema %}
+  {
+    "name": "Cart Upsells",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Content"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "Products You May Like"
+      },
+      {
+        "type": "header",
+        "content": "Section Spacing"
+      },
+      {
+        "id": "bottom_margin_mobile",
+        "label": "Bottom Margin - Mobile",
+        "type": "range",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "default": 40
+      },
+      {
+        "id": "bottom_margin_desktop",
+        "label": "Bottom Margin - Desktop",
+        "type": "range",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "default": 70
+      }
+    ],
+    "blocks": [
+      {
+        "type": "upsell",
+        "name": "Upsell",
+        "settings": [
+          {
+            "type": "product",
+            "id": "upsell_requirement",
+            "label": "Cart Product",
+            "info": "Select the item that should be in the cart to trigger the upsell"
+          },
+          {
+            "type": "product",
+            "id": "upsell_product",
+            "label": "Cart Upsell",
+            "info": "Select the item that should be the upsell"
+          }
+        ]
+      }
+    ],
+    "templates": [
+      "cart"
+    ],
+    "presets": [
+      {
+        "name": "Cart Upsells",
+        "category": "Cart"
+      }
+    ]
+  }
+{% endschema %}
