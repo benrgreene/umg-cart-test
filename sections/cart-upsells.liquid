@@ -1,6 +1,7 @@
 {{- 'cart-upsells.css' | asset_url | stylesheet_tag -}}
 
 
+{%- assign displayed_upsell = false -%}
 {%- capture handles_in_cart -%}
   {%- for item in cart.items -%}
     |{{- item.product.handle -}}|
@@ -10,12 +11,13 @@
 
 <div class="cart-upsells page-width"
      cart-upsells-page="{{ section.id }}">
-  <h2>{{- section.settings.title -}}</h2>
+  <h2 class="cart-upsells__title">{{- section.settings.title -}}</h2>
   <div data-cart-upsells
        class="cart-upsells__products">
     {%- for block in section.blocks -%}
       {%- assign requirement_handle = '|' | append: block.settings.upsell_requirement | append: '|' -%}
       {%- if handles_in_cart contains requirement_handle -%}
+        {%- assign displayed_upsell = true -%}
         {%- assign product_object = all_products[block.settings.upsell_product] -%}
         <product-tile title="{{ product_object.title }}"
                       price="{{ product_object.price | money }}"
@@ -23,6 +25,13 @@
                       variant="{{ product_object.selected_or_first_available_variant.id }}"></product-tile>
       {%- endif -%}
     {%- endfor -%}
+    {%- if displayed_upsell == false -%}
+      <style>
+        .cart-upsells__title { 
+          display: none; 
+        }
+      </style>
+    {%- endif -%}
   </div>
 </div>
 

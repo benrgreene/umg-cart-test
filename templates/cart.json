@@ -58,34 +58,10 @@
         "bottom_margin_mobile": 40,
         "bottom_margin_desktop": 70
       }
-    },
-    "cart-footer": {
-      "type": "main-cart-footer",
-      "blocks": {
-        "subtotal": {
-          "type": "subtotal",
-          "settings": {
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-          }
-        }
-      },
-      "block_order": [
-        "subtotal",
-        "buttons"
-      ],
-      "settings": {
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
     }
   },
   "order": [
     "cart-items",
-    "7e8907c7-f605-43df-94b8-68d3565a7020",
-    "cart-footer"
+    "7e8907c7-f605-43df-94b8-68d3565a7020"
   ]
 }

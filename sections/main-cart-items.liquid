@@ -25,16 +25,53 @@
 
 <div class="page-width section-{{ section.id }}-padding">
   <h1>Your Cart</h1>
-  <div data-cart-items-list="{{ section.id }}"
-       class="cart-items">
-    {%- for item in cart.items -%}
-      <cart-page-item title="{{ item.product.title }}"
-                      price="Item Price: {{ item.final_price | money }}"
-                      line-price="Item Subtotal: {{ item.final_line_price | money }}"
-                      quantity="{{ item.quantity }}"
-                      key="{{ item.key }}"
-                      image="{{ item.product.featured_image | img_url: '400x' }}"></cart-page-item>
-    {%- endfor -%}
+  <div data-cart-items-list="{{ section.id }}">
+    <div class="cart-wrapper">
+      <div class="cart-items">
+        {%- for item in cart.items -%}
+          <cart-page-item title="{{ item.product.title }}"
+                          price="Item Price: {{ item.final_price | money }}"
+                          line-price="Item Subtotal: {{ item.final_line_price | money }}"
+                          quantity="{{ item.quantity }}"
+                          key="{{ item.key }}"
+                          image="{{ item.product.featured_image | img_url: '400x' }}"></cart-page-item>
+        {%- endfor -%}
+        {%- if cart.item_count == 0 -%}
+          <div>
+            <p>
+              There are no items in your cart!
+            </p>
+            <a href="/collections/all"
+               class="button">
+              Continue Shopping
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="cart-summary">
+        <p class="cart-summary__title">Cart Summary:</p>
+        <p class="cart-summary__line">
+          Original Subtotal: 
+          <span>{{- cart.items_subtotal_price | money -}}</span>
+        </p>
+        <p class="cart-summary__line">
+          Discounts: 
+          <span>{{- cart.total_discount | money -}}</span>
+        </p>
+        <p class="cart-summary__line">
+          Subtotal: 
+          <span>{{- cart.total_price | money -}}</span>
+        </p>
+
+        <a href="/checkout"
+           class="button button--full cart-summary__checkout">
+          Checkout
+        </a>
+        <p class="cart-summary__disclaimer">
+          * Shipping and taxes calculated at checkout
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 

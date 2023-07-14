@@ -3507,10 +3507,10 @@ details-disclosure > details {
   cursor: pointer;
 }
 
-.product-tile__image {
+.button--full {
   width: 100%;
 }
 
-.product-tile__button {
+.product-tile__image {
   width: 100%;
 }
